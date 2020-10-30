@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">IvySoft BTmsgr</string>
+    <string name="str_label_btn_send">Enviar</string>
+    <string name="str_menu_search_devices">Buscar dispositivos</string>
+    <string name="str_menu_bluetooth_on">Activar Bluetooth</string>
+</resources>
