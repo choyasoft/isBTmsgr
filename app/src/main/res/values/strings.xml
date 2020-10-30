@@ -3,4 +3,6 @@
     <string name="str_label_btn_send">Enviar</string>
     <string name="str_menu_search_devices">Buscar dispositivos</string>
     <string name="str_menu_bluetooth_on">Activar Bluetooth</string>
+    <string name="str_paired_devices">Dispositivos emparejados</string>
+    <string name="str_available_devices">Dispositivos encontrados </string>
 </resources>
