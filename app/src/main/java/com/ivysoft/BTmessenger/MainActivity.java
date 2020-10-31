@@ -24,21 +24,63 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 private Context context;
 private BluetoothAdapter bluetoothAdapter;
+private ChatUtils chatUtils;
+
 private final int LOCATION_PERMISSION_REQUEST = 101;
 private final int SELECT_DEVICE = 102;
 
+
 public static final int MESSAGE_STATE_CHANGED = 0;
-public static final int MESSAGE_READ = 0;
-public static final int MESSAGE_WRITE = 0;
-public static final int MESSAGE_DEVICE_NAME = 0;
-public static final int MESSAGE_TOAST_MESSAGE = 0;
+public static final int MESSAGE_READ = 1;
+public static final int MESSAGE_WRITE = 2;
+public static final int MESSAGE_DEVICE_NAME = 3;
+public static final int MESSAGE_TOAST = 4;
+
+
+public static final String TOAST = "toast";
+public static final String DEVICE_NAME = "devicename";
+private String connectedDevice;
 
 private Handler handler = new Handler(new Handler.Callback() {
     @Override
-    public boolean handleMessage(@NonNull Message msg) {
+    public boolean handleMessage(@NonNull Message message) {
+        switch (message.what){
+            case MESSAGE_STATE_CHANGED:
+                switch (message.arg1){
+                    case ChatUtils.STATE_NONE:
+                        setState("Desconectado");
+                        break;
+                    case ChatUtils.STATE_LISTEN:
+                        setState("Desconectado");
+                        break;
+                    case ChatUtils.STATE_CONNECTING:
+                        setState("Conectando...");
+                        break;
+                    case ChatUtils.STATE_CONNECTED:
+                        setState("Conectado: "+ connectedDevice);
+                        break;
+                }
+                break;
+            case MESSAGE_READ:
+                break;
+            case MESSAGE_WRITE:
+                break;
+            case MESSAGE_DEVICE_NAME:
+                connectedDevice = message.getData().getString(DEVICE_NAME);
+                Toast.makeText(context, connectedDevice,Toast.LENGTH_SHORT).show();
+                break;
+            case MESSAGE_TOAST:
+                Toast.makeText(context, message.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
+                break;
+
+        }
         return false;
     }
 });
+
+private void setState(CharSequence subTitle){
+    getSupportActionBar().setSubtitle(subTitle);
+}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +88,8 @@ private Handler handler = new Handler(new Handler.Callback() {
         setContentView(R.layout.activity_main);
 
         context = this;
+
+        chatUtils = new ChatUtils(context, handler);
         initBluetooth();
     }
     // Método para iniciar Bluetooth
