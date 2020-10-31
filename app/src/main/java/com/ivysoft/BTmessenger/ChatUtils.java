@@ -1,6 +1,8 @@
 package com.ivysoft.BTmessenger;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,10 +17,13 @@ import java.util.UUID;
 public class ChatUtils {
     private Context context;
     private Handler handler;
+    private BluetoothAdapter bluetoothAdapter;
 
     private ConnectThread connectThread;
 
     private final UUID APP_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+    private final String APP_NAME = "ivySoft BTmsgr";
+
 
     public static final int STATE_NONE = 0;
     public static final int STATE_LISTEN = 1;
@@ -32,7 +37,7 @@ public class ChatUtils {
         this.handler = handler;
 
         state = STATE_NONE;
-
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
     // Obtiene el estado del chat
@@ -66,9 +71,48 @@ public class ChatUtils {
 
         setState(STATE_CONNECTING);
     }
+        // Clase hilo que acepta como server
+    private class AcceptThread extends Thread {
+        private BluetoothServerSocket serverSocket;
 
+        public AcceptThread(){
+            BluetoothServerSocket tmp = null
+                    try{
+                        tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(APP_NAME, APP_UUID);
+                    }catch (IOException e){
+                        Log.e("Accept->Constructor", e.toString());
+                    }
+                    serverSocket = tmp;
 
-    // Crear el hilo de conexión (socket)
+        }
+        // Método que acepta/arranca/cierra el socket servidor
+        public void run(){
+            BluetoothSocket socket = null;
+            try{
+            socket = serverSocket.accept();
+            }catch (IOException e){
+                Log.e("Accept->Run", e.toString());
+                try{
+                    serverSocket.close();
+                }catch (IOException e1){
+                    Log.e("Accept->Close", e.toString());
+                }
+            }
+
+            if (socket != null){
+                switch (state){
+                    case STATE_LISTEN:
+                        break;
+                    case STATE_CONNECTING:
+                        connect(socket.getRemoteDevice());
+                        break;
+                }
+            }
+
+        }
+    }
+
+    // Crear el hilo de conexión cliente (socket)
     private class ConnectThread extends Thread {
         private final BluetoothSocket socket;
         private final BluetoothDevice device;

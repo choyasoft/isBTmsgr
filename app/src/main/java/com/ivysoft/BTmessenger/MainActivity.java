@@ -89,8 +89,10 @@ private void setState(CharSequence subTitle){
 
         context = this;
 
-        chatUtils = new ChatUtils(context, handler);
         initBluetooth();
+
+        chatUtils = new ChatUtils(context, handler);
+
     }
     // Método para iniciar Bluetooth
     private void initBluetooth(){
@@ -141,7 +143,8 @@ private void setState(CharSequence subTitle){
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == SELECT_DEVICE && resultCode == RESULT_OK){
             String address = data.getStringExtra("Dirección MAC");
-            Toast.  makeText(context, "Dirección MAC: "+ address, Toast.LENGTH_SHORT).show();
+            chatUtils.connect(bluetoothAdapter.getRemoteDevice(address));
+
 
         }
         super.onActivityResult(requestCode, resultCode, data);
