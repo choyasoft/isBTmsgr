@@ -191,6 +191,13 @@ public class ChatUtils {
                 }
             }
 
+            public void cancel(){
+            try{
+                socket.close();
+            }catch (IOException e){
+
+            }
+
         }
         private void connectionLost(){
             Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);

@@ -72,8 +72,8 @@ private Handler handler = new Handler(new Handler.Callback() {
                 }
                 break;
             case MESSAGE_READ:
-                byte[] buffer = (byte[]) message.obj;
-                String inputBuffer = new String(buffer, 0, message.arg1);
+                byte[] buffer1 = (byte[]) message.obj;
+                String inputBuffer = new String(buffer1, 0, message.arg1);
                 adapterMainChat.add(connectedDevice+ ": " + inputBuffer);
                 break;
             case MESSAGE_WRITE:
