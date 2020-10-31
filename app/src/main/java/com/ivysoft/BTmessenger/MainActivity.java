@@ -19,12 +19,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 private Context context;
 private BluetoothAdapter bluetoothAdapter;
 private ChatUtils chatUtils;
+
+private ListView listMainChat;
+private EditText edCreateMessage;
+private Button btnSendMessage;
 
 private final int LOCATION_PERMISSION_REQUEST = 101;
 private final int SELECT_DEVICE = 102;
@@ -89,11 +96,21 @@ private void setState(CharSequence subTitle){
 
         context = this;
 
+        init();
         initBluetooth();
 
         chatUtils = new ChatUtils(context, handler);
 
     }
+
+    // Inicializar la conversación de chat
+    private void init(){
+    listMainChat = findViewById(R.id.list_conversation);
+    edCreateMessage = findViewById(R.id.ed_enter_message);
+    btnSendMessage = findViewById(R.id.btn_send_message);
+    }
+
+
     // Método para iniciar Bluetooth
     private void initBluetooth(){
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
