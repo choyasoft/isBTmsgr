@@ -23,6 +23,7 @@ public class ChatUtils {
     private BluetoothAdapter bluetoothAdapter;
     private ConnectThread connectThread;
     private AcceptThread acceptThread;
+    private ConnectedThread connectedThread;
 
     private final UUID APP_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private final String APP_NAME = "ivySoft BTmsgr";
@@ -56,27 +57,34 @@ public class ChatUtils {
 
     // Método que comienza el chat
     private synchronized void start() {
-    if (connectThread!=null){
-        connectThread.cancel();
-        connectThread = null;
+         if(connectThread!=null){
+             connectThread.cancel();
+             connectThread = null;
     }
-
-    if (acceptThread == null){
-        acceptThread = new AcceptThread();
-        acceptThread.start();
+         if(acceptThread == null){
+            acceptThread = new AcceptThread();
+            acceptThread.start();
     }
+        if(connectThread != null){
+            connectThread.cancel();
+            connectThread = null;
+        }
         setState(STATE_LISTEN);
     }
 
     // Método que termina el chat
     public synchronized void stop() {
-    if(connectThread != null){
+         if(connectThread != null){
         connectThread.cancel();
         connectThread = null;
     }
-    if (acceptThread != null){
+         if(acceptThread != null){
         acceptThread.cancel();
         acceptThread = null;
+    }
+         if(connectThread != null){
+        connectThread.cancel();
+        connectThread = null;
     }
         setState(STATE_NONE);
     }
@@ -277,11 +285,20 @@ public class ChatUtils {
         }
 
         // Método que realiza la conexión al dispositivo y cambia su estado a connected
-        private synchronized void connect(BluetoothDevice device) {
+        private synchronized void connected(BluetoothSocket, BluetoothDevice device) {
             if (connectThread != null) {
                 connectThread.cancel();
                 connectThread = null;
             }
+
+            if (connectedThread != null){
+                connectedThread.cancel();
+                connectedThread = null;
+            }
+
+            connectedThread = new ConnectedThread(socket);
+            connectedThread.start();
+
             Message message = handler.obtainMessage(MainActivity.MESSAGE_DEVICE_NAME);
             Bundle bundle = new Bundle();
             bundle.putString(MainActivity.DEVICE_NAME, device.getName());
