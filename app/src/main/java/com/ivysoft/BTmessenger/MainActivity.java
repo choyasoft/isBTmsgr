@@ -51,7 +51,7 @@ private Handler handler = new Handler(new Handler.Callback() {
                         setState("Desconectado");
                         break;
                     case ChatUtils.STATE_LISTEN:
-                        setState("Desconectado");
+                        setState("Esperando conexión");
                         break;
                     case ChatUtils.STATE_CONNECTING:
                         setState("Conectando...");

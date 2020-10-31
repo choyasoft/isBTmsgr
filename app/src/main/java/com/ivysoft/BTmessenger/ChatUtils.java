@@ -125,7 +125,7 @@ public class ChatUtils {
                         connect(socket.getRemoteDevice());
                         break;
                     case STATE_NONE:
-                       // break;
+                       break;
                     case STATE_CONNECTED:
                         try{
                             socket.close();

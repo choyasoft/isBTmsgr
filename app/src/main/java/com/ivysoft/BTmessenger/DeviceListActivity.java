@@ -93,7 +93,7 @@ public class DeviceListActivity extends AppCompatActivity {
                     if (adapterAvailableDevices.getCount() == 0) {
                         Toast.makeText(context, "No se encuentran dispositivos nuevos", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "Búsqueda finalizada", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Búsqueda terminada", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -120,7 +120,7 @@ public class DeviceListActivity extends AppCompatActivity {
     private void scanDevices(){
         progressScanDevices.setVisibility(View.VISIBLE);
         adapterAvailableDevices.clear();
-        Toast.makeText(context,"Escaneando dispositivos...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"Buscando dispositivos...", Toast.LENGTH_SHORT).show();
 
         if(bluetoothAdapter.isDiscovering()){
             bluetoothAdapter.cancelDiscovery();
