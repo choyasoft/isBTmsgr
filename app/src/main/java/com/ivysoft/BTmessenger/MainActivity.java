@@ -192,4 +192,11 @@ private void setState(CharSequence subTitle){
             }
         }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (chatUtils != null){
+            chatUtils.stop();
+        }
     }
+}

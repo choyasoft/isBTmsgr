@@ -18,8 +18,8 @@ public class ChatUtils {
     private Context context;
     private Handler handler;
     private BluetoothAdapter bluetoothAdapter;
-
     private ConnectThread connectThread;
+    private AcceptThread acceptThread;
 
     private final UUID APP_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private final String APP_NAME = "ivySoft BTmsgr";
@@ -53,14 +53,32 @@ public class ChatUtils {
 
     // Método que comienza el chat
     private synchronized void start() {
+    if (connectThread!=null){
+        connectThread.cancel();
+        connectThread = null;
+    }
 
+    if (acceptThread == null){
+        acceptThread = new AcceptThread();
+        acceptThread.start();
+    }
+        setState(STATE_LISTEN);
     }
 
     // Método que termina el chat
-    private synchronized void stop() {
-
+    synchronized void stop() {
+    if(connectThread != null){
+        connectThread.cancel();
+        connectThread = null;
+    }
+    if (acceptThread != null){
+        acceptThread.cancel();
+        acceptThread = null;
+    }
+        setState(STATE_NONE);
     }
 
+    // Método de conexión del hilo
     public void connect(BluetoothDevice device) {
         if (state == STATE_CONNECTING) {
             connectThread.cancel();
@@ -76,7 +94,7 @@ public class ChatUtils {
         private BluetoothServerSocket serverSocket;
 
         public AcceptThread(){
-            BluetoothServerSocket tmp = null
+            BluetoothServerSocket tmp = null;
                     try{
                         tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(APP_NAME, APP_UUID);
                     }catch (IOException e){
@@ -107,12 +125,25 @@ public class ChatUtils {
                         connect(socket.getRemoteDevice());
                         break;
                     case STATE_NONE:
-                        break;
+                       // break;
                     case STATE_CONNECTED:
-                        socket.close();
+                        try{
+                            socket.close();
+                        }catch (IOException e){
+                            Log.e("Accept->CloseSocket", e.toString());
+                        }
+                        break;
                 }
             }
 
+        }
+
+        public void cancel(){
+            try{
+                serverSocket.close();
+            }catch (IOException e){
+                Log.e("Accept->CloseServer", e.toString());
+            }
         }
     }
 
