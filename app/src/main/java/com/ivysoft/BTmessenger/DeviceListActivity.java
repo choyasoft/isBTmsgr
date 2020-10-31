@@ -93,7 +93,7 @@ public class DeviceListActivity extends AppCompatActivity {
                     if (adapterAvailableDevices.getCount() == 0) {
                         Toast.makeText(context, "No se encuentran dispositivos nuevos", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "Pulsa en el dispositivo para comenzar el chat", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Comenzando el chat...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

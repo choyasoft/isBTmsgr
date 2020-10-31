@@ -15,6 +15,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,6 +26,19 @@ private Context context;
 private BluetoothAdapter bluetoothAdapter;
 private final int LOCATION_PERMISSION_REQUEST = 101;
 private final int SELECT_DEVICE = 102;
+
+public static final int MESSAGE_STATE_CHANGED = 0;
+public static final int MESSAGE_READ = 0;
+public static final int MESSAGE_WRITE = 0;
+public static final int MESSAGE_DEVICE_NAME = 0;
+public static final int MESSAGE_TOAST_MESSAGE = 0;
+
+private Handler handler = new Handler(new Handler.Callback() {
+    @Override
+    public boolean handleMessage(@NonNull Message msg) {
+        return false;
+    }
+});
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +97,7 @@ private final int SELECT_DEVICE = 102;
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == SELECT_DEVICE && resultCode == RESULT_OK){
             String address = data.getStringExtra("Dirección MAC");
-            Toast.makeText(context, "Dirección MAC: "+ address, Toast.LENGTH_SHORT).show();
+            Toast.  makeText(context, "Dirección MAC: "+ address, Toast.LENGTH_SHORT).show();
 
         }
         super.onActivityResult(requestCode, resultCode, data);
