@@ -189,6 +189,8 @@ public class ChatUtils {
             bundle.putString(MainActivity.TOAST, "Se ha perdido la conexión");
             message.setData(bundle);
             handler.sendMessage(message);
+
+            ChatUtils.this.start();
         }
 
     }
