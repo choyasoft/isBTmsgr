@@ -66,7 +66,7 @@ public class ChatUtils {
     }
 
     // Método que termina el chat
-    synchronized void stop() {
+    public synchronized void stop() {
     if(connectThread != null){
         connectThread.cancel();
         connectThread = null;
