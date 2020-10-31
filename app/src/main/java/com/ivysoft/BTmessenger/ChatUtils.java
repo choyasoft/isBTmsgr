@@ -5,12 +5,15 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.icu.util.Output;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.UUID;
 
 
@@ -146,6 +149,41 @@ public class ChatUtils {
             }
         }
     }
+    // Clase hilo conectado
+    private class ConnectedThread extends Thread{
+        private final BluetoothSocket socket;
+        private final InputStream inputStream;
+        private OutputStream outputStream;
+
+        public ConnectedThread(BluetoothSocket socket){
+            this.socket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+
+            try{
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            }catch (IOException e){
+                Log.e("Connected->d", e.toString());
+            }
+            inputStream = tmpIn;
+            outputStream = tmpOut;
+        }
+        // Método iniciar connected
+        public void run(){
+            byte[] buffer = new byte[1024];
+            int bytes;
+
+            try{
+                bytes= inputStream.read(buffer);
+                handler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+            }catch (IOException e){
+
+            }
+        }
+
+    }
+
 
     // Crear el hilo de conexión cliente (socket)
     private class ConnectThread extends Thread {

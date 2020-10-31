@@ -19,6 +19,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -32,6 +34,7 @@ private ChatUtils chatUtils;
 private ListView listMainChat;
 private EditText edCreateMessage;
 private Button btnSendMessage;
+private ArrayAdapter<String> adapterMainChat;
 
 private final int LOCATION_PERMISSION_REQUEST = 101;
 private final int SELECT_DEVICE = 102;
@@ -69,6 +72,9 @@ private Handler handler = new Handler(new Handler.Callback() {
                 }
                 break;
             case MESSAGE_READ:
+                byte[] buffer = (byte[]) message.obj;
+                String inputBuffer = new String(buffer, 0, message.arg1);
+                adapterMainChat.add(connectedDevice+ ": " + inputBuffer);
                 break;
             case MESSAGE_WRITE:
                 break;
@@ -108,6 +114,20 @@ private void setState(CharSequence subTitle){
     listMainChat = findViewById(R.id.list_conversation);
     edCreateMessage = findViewById(R.id.ed_enter_message);
     btnSendMessage = findViewById(R.id.btn_send_message);
+
+        adapterMainChat = new ArrayAdapter<String>(context, R.layout.message_layout);
+        listMainChat.setAdapter(adapterMainChat);
+
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message = edCreateMessage.getText().toString();
+                if(!message.isEmpty()){
+
+                }
+
+            }
+        });
     }
 
 
