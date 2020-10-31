@@ -298,7 +298,7 @@ public class ChatUtils {
         }
 
         // Método que realiza la conexión al dispositivo y cambia su estado a connected
-        private synchronized void connected(BluetoothSocket, BluetoothDevice device) {
+        private synchronized void connected(BluetoothSocket Socket, BluetoothDevice device) {
             if (connectThread != null) {
                 connectThread.cancel();
                 connectThread = null;
