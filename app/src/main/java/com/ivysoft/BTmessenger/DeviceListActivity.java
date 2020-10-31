@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +53,32 @@ public class DeviceListActivity extends AppCompatActivity {
                 adapterPairedDevices.add(device.getName()+ "\n" + device.getAddress());
             }
         }
+        IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(bluetoothDeviceListener, intentFilter);
+        IntentFilter intentFilter1 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        registerReceiver(bluetoothDeviceListener, intentFilter1);
     }
+
+    private BroadcastReceiver bluetoothDeviceListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if(BluetoothDevice.ACTION_FOUND.equals(action){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (device.getBondState() != BluetoothDevice.BOND_BONDED){
+                    adapterAvailableDevices.add(device.getName()+ "\n" +device.getAddress());
+                } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                    progressScanDevices.setVisibility(View.GONE);
+                    if (adapterAvailableDevices.getCount() == 0) {
+                        Toast.makeText(context, "No se encuentran dispositivos nuevos", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Pulsa en el dispositivo para comenzar el chat", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,14 +90,23 @@ public class DeviceListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_scan_devices:
-                Toast.makeText(context, "Buscando dispositivos...", Toast.LENGTH_SHORT).show();
+                scanDevices();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
+    // Método para mostrar el progressbar mientras escanea dispositivos
     private void scanDevices(){
         progressScanDevices.setVisibility(View.VISIBLE);
+        adapterAvailableDevices.clear();
+        Toast.makeText(context,"Escaneando dispositivos...", Toast.LENGTH_SHORT).show();
+
+        if(bluetoothAdapter.isDiscovering()){
+            bluetoothAdapter.cancelDiscovery();
+
+        }
+        bluetoothAdapter.startDiscovery();
     }
 }
