@@ -1,6 +1,7 @@
 package com.ivysoft.BTmessenger;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 private Context context;
 private BluetoothAdapter bluetoothAdapter;
 private final int LOCATION_PERMISSION_REQUEST = 101;
+private final int SELECT_DEVICE = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +74,18 @@ private final int LOCATION_PERMISSION_REQUEST = 101;
 
         }else{
             Intent intent = new Intent(context, DeviceListActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, SELECT_DEVICE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == SELECT_DEVICE && resultCode == RESULT_OK){
+            String address = data.getStringExtra("Dirección MAC");
+            Toast.makeText(context, "Dirección MAC: "+ address, Toast.LENGTH_SHORT).show();
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -81,7 +93,7 @@ private final int LOCATION_PERMISSION_REQUEST = 101;
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Intent intent = new Intent(context, DeviceListActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, SELECT_DEVICE);
             } else {
                 new AlertDialog.Builder(context)
                         .setCancelable(false)
