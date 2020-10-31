@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_STATE_CHANGED:
                     switch (message.arg1) {
                         case ChatUtils.STATE_NONE:
-                            setState("No conectado");
+                            setState("No conectado.");
                             break;
                         case ChatUtils.STATE_LISTEN:
                             setState("No conectado");
