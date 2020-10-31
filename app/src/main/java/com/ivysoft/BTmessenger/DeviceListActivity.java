@@ -3,6 +3,7 @@ package com.ivysoft.BTmessenger;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -58,7 +59,8 @@ public class DeviceListActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent.putExtra("Dirección MAC", address);
-                setResult(RESULT_OK, intent);
+
+                setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });
