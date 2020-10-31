@@ -126,7 +126,8 @@ private void setState(CharSequence subTitle){
             public void onClick(View view) {
                 String message = edCreateMessage.getText().toString();
                 if(!message.isEmpty()){
-
+                    edCreateMessage.setText("");
+                    chatUtils.write(message.getBytes());
                 }
 
             }
