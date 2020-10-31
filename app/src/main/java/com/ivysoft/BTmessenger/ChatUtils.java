@@ -100,6 +100,19 @@ public class ChatUtils {
 
         setState(STATE_CONNECTING);
     }
+    // Función envio de mensajes
+    public void write(byte[] buffer){
+        ConnectedThread connThread;
+        synchronized (this) {
+            if(state != STATE_CONNECTED){
+                return;
+            }
+            connThread = connectedThread;
+        }
+
+        connThread.write(buffer);
+    }
+
         // Clase hilo que acepta como server
     private class AcceptThread extends Thread {
         private BluetoothServerSocket serverSocket;
