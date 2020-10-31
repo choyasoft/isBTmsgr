@@ -5,4 +5,5 @@
     <string name="str_menu_bluetooth_on">Activar Bluetooth</string>
     <string name="str_paired_devices">Dispositivos emparejados</string>
     <string name="str_available_devices">Dispositivos encontrados </string>
+    <string name="str_menu_scan_devices">Buscar dispositivos</string>
 </resources>

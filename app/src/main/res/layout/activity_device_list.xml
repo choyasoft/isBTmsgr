@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".DeviceListActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_scan_devices"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

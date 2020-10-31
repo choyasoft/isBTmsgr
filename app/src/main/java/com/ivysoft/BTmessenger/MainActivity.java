@@ -55,7 +55,6 @@ private final int LOCATION_PERMISSION_REQUEST = 101;
 
             case R.id.menu_search_devices:
                 checkPermissions();
-                Toast.makeText(context, "Buscando dispositivos...", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.menu_enable_bluetooth:
@@ -106,11 +105,16 @@ private final int LOCATION_PERMISSION_REQUEST = 101;
          }
         }
         private void enableBluetooth () {
-            if (bluetoothAdapter.isEnabled()) {
-                Toast.makeText(context, "Bluetooth ya estaba activado", Toast.LENGTH_SHORT).show();
-            } else {
+        // Si bluetooth no está activado, activarlo y mostrar un mensaje:
+            if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
                 Toast.makeText(context, "Activando Bluetooth...", Toast.LENGTH_SHORT).show();
+            }
+            // Buscar dispositivos
+            if(bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE){
+                Intent discoveryIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                discoveryIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+                startActivity(discoveryIntent);
             }
         }
 
