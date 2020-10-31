@@ -32,6 +32,8 @@ public class DeviceListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
         context = this;
+
+        init();
     }
 
     private void init() {
@@ -48,11 +50,12 @@ public class DeviceListActivity extends AppCompatActivity {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-        if (pairedDevices!=null && pairedDevices.size()>0){
+        if (pairedDevices != null && pairedDevices.size()>0){
             for (BluetoothDevice device: pairedDevices){
                 adapterPairedDevices.add(device.getName()+ "\n" + device.getAddress());
             }
         }
+
         IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(bluetoothDeviceListener, intentFilter);
         IntentFilter intentFilter1 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -64,11 +67,12 @@ public class DeviceListActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if(BluetoothDevice.ACTION_FOUND.equals(action)){
+            if(BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED){
-                    adapterAvailableDevices.add(device.getName()+ "\n" +device.getAddress());
-                } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+                    adapterAvailableDevices.add(device.getName() + "\n" + device.getAddress());
+                }
+            }else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                     progressScanDevices.setVisibility(View.GONE);
                     if (adapterAvailableDevices.getCount() == 0) {
                         Toast.makeText(context, "No se encuentran dispositivos nuevos", Toast.LENGTH_SHORT).show();
@@ -77,7 +81,6 @@ public class DeviceListActivity extends AppCompatActivity {
                     }
                 }
             }
-        }
     };
 
     @Override
