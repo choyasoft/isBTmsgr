@@ -64,7 +64,7 @@ public class DeviceListActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if(BluetoothDevice.ACTION_FOUND.equals(action){
+            if(BluetoothDevice.ACTION_FOUND.equals(action)){
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED){
                     adapterAvailableDevices.add(device.getName()+ "\n" +device.getAddress());
