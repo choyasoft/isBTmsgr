@@ -77,6 +77,9 @@ private Handler handler = new Handler(new Handler.Callback() {
                 adapterMainChat.add(connectedDevice+ ": " + inputBuffer);
                 break;
             case MESSAGE_WRITE:
+                byte[] buffer = (byte[])message.obj;
+                String outputBuffer = new String(buffer);
+                adapterMainChat.add("Yo: "+ outputBuffer);
                 break;
             case MESSAGE_DEVICE_NAME:
                 connectedDevice = message.getData().getString(DEVICE_NAME);
