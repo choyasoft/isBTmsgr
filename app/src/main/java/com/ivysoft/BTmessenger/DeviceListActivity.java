@@ -103,7 +103,6 @@ public class DeviceListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_device_list, menu);
-        progressScanDevices.setVisibility(View.INVISIBLE);
         return super.onCreateOptionsMenu(menu);
     }
 

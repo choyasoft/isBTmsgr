@@ -11,7 +11,7 @@
         android:id="@+id/progress_scan_devices"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        />
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="match_parent"
