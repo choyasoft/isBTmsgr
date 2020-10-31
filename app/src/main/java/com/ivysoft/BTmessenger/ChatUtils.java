@@ -178,10 +178,19 @@ public class ChatUtils {
                 bytes= inputStream.read(buffer);
                 handler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
             }catch (IOException e){
-                connectionLost(){
+                connectionLost();
 
                 }
             }
+            private void write(byte[] buffer){
+                try{
+                    outputStream.write(buffer);
+                    handler.obtainMessage(MainActivity.MESSAGE_WRITE, -1, -1, buffer);
+                }catch (IOException e){
+
+                }
+            }
+
         }
         private void connectionLost(){
             Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);
