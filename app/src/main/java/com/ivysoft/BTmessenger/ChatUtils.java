@@ -106,6 +106,10 @@ public class ChatUtils {
                     case STATE_CONNECTING:
                         connect(socket.getRemoteDevice());
                         break;
+                    case STATE_NONE:
+                        break;
+                    case STATE_CONNECTED:
+                        socket.close();
                 }
             }
 
