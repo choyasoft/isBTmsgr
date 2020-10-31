@@ -76,6 +76,7 @@ public class DeviceListActivity extends AppCompatActivity {
         registerReceiver(bluetoothDeviceListener, intentFilter);
         IntentFilter intentFilter1 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(bluetoothDeviceListener, intentFilter1);
+
     }
 
     private BroadcastReceiver bluetoothDeviceListener = new BroadcastReceiver() {
@@ -102,6 +103,7 @@ public class DeviceListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_device_list, menu);
+        progressScanDevices.setVisibility(View.INVISIBLE);
         return super.onCreateOptionsMenu(menu);
     }
 
